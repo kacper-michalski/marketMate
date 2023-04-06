@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BFAA674D-CD67-454F-A84B-3ECF27133EB4}</ProjectGuid>
+    <ProjectGuid>{AA109AFC-74B7-4F7B-A5DD-DB47080C09AD}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>marketMate</RootNamespace>
     <AssemblyName>marketMate</AssemblyName>

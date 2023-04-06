@@ -1,0 +1,7 @@
+P:\marketMate\bin\Debug\marketMate.exe.config
+P:\marketMate\bin\Debug\marketMate.exe
+P:\marketMate\bin\Debug\marketMate.pdb
+P:\marketMate\obj\Debug\marketMate.csproj.AssemblyReference.cache
+P:\marketMate\obj\Debug\marketMate.csproj.CoreCompileInputs.cache
+P:\marketMate\obj\Debug\marketMate.exe
+P:\marketMate\obj\Debug\marketMate.pdb
