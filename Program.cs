@@ -27,7 +27,6 @@ namespace marketMate
         {
             string path = @"warehouse.txt";
             StreamWriter sw = new StreamWriter(path, true);
-            Console.WriteLine("Magazyn został otwarty!");
             return sw;
         }
 
@@ -88,14 +87,12 @@ namespace marketMate
         {
             string path = @"priceList.txt";
             StreamWriter sw = File.CreateText(path);
-            Console.WriteLine("Cennik został utworzony!");
             sw.Close();
         }
         static StreamReader streamReaderPriceList()
         {
             string path = @"priceList.txt";
             StreamReader sr = File.OpenText(path);
-            Console.WriteLine("Cennik został otwarty!");
             return sr;
         }
 
@@ -103,7 +100,6 @@ namespace marketMate
         {
             string path = @"priceList.txt";
             StreamWriter sw = new StreamWriter(path, true);
-            Console.WriteLine("Cennik został otwarty!");
             return sw;
         }
         static void initializeWarehouse()
@@ -114,12 +110,10 @@ namespace marketMate
             if (!File.Exists(path))
             {
                 sw = File.CreateText(path);
-                Console.WriteLine("Magazyn został utworzony!");
             }
             else
             {
                 sw = new StreamWriter(path, true);
-                Console.WriteLine("Magazyn został otwarty!");
             }
 
             sw.Close();
@@ -146,12 +140,10 @@ namespace marketMate
             if (!File.Exists(path))
             {
                 sw = File.CreateText(path);
-                Console.WriteLine("Cennik został utworzony!");
             }
             else
             {
                 sw = new StreamWriter(path, true);
-                Console.WriteLine("Cennik został otwarty!");
             }
 
             sw.Close();
@@ -220,26 +212,15 @@ namespace marketMate
             }
         }
 
-
         static void endOfApp()
         {
-            Console.Write("Naciśnij dowolny klawisz");
+            Console.Write("Naciśnij dowolny klawisz...");
             Console.ReadKey();
         }
 
         static void Main(string[] args)
         {
-            // initializeWarehouse();
-            // initializePriceList();
-
             Console.WriteLine("Dzień dobry, z tej strony marketMate!");
-            // listFeatures();
-
-            //Console.Write("Podaj id produktu który chcesz wyszukać: ");
-            //string id = Console.ReadLine();
-            // addNewProductToWarehouse("km421", "42");
-            Console.WriteLine(findProductIndexInWarehouse("km123"));
-            removeProductFromWarehouse("km321");
             endOfApp();
 
         }
