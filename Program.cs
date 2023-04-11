@@ -80,8 +80,18 @@ namespace marketMate
 
             File.WriteAllLines("warehouse.txt", lines);
         }
-
-
+        static void changeTheQuantityOfProductInWarehouse(string id, int quantityToReduce)
+        {
+            string[] lines = File.ReadAllLines("warehouse.txt");
+            int productIndex = findProductIndexInWarehouse(id);
+            string[] line = lines[productIndex].Split(' ');
+            if ((line[0]) == id)
+            {
+                line[1] = (int.Parse(line[1]) + quantityToReduce).ToString();
+                lines[productIndex] = line[0] + ' ' + line[1];
+            }
+            File.WriteAllLines("warehouse.txt", lines);
+        }
 
         static void createPriceList()
         {
@@ -161,6 +171,8 @@ namespace marketMate
 
         static void listFeatures()
         {
+            string id = "";
+            string quantity = "";
             string[] features = { "1. Magazyn", "2. Cennik", "3. Sprzedaż"};
             foreach (var feature in features)
             {
@@ -188,11 +200,22 @@ namespace marketMate
                     {
                         case "1":
                             Console.WriteLine("Wybrano dodawanie");
+                            Console.WriteLine("Podaj id produktu: ");
+                            id = Console.ReadLine();
+                            Console.WriteLine("Podaj ilość produktu: ");
+                            quantity = Console.ReadLine();
+                            addNewProductToWarehouse(id, quantity);
                             break;
                         case "2":
                             Console.WriteLine("Wybrano usuwanie");
+                            Console.WriteLine("Podaj id produktu: ");
+                            id = Console.ReadLine();
+                            removeProductFromWarehouse(id);
                             break;
                         case "3":
+                            Console.WriteLine("Podaj id produktu: ");
+                            id = Console.ReadLine();
+                            findProductIndexInWarehouse(id);
                             Console.WriteLine("Wybrano szukanie");
                             break;
                         default:
@@ -221,6 +244,7 @@ namespace marketMate
         static void Main(string[] args)
         {
             Console.WriteLine("Dzień dobry, z tej strony marketMate!");
+            changeTheQuantityOfProductInWarehouse("km421", -2);
             endOfApp();
 
         }
