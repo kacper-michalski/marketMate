@@ -9,7 +9,23 @@ namespace marketMate
 {
     class Program
     {
-
+        enum features
+        {
+            Warehouse = 1,
+            priceList = 2
+        }
+        enum warehouseFeatures
+        {
+            Adding = 1,
+            Subtraction = 2,
+            Find = 3
+        }
+        enum priceListFeatures
+        {
+            Adding = 1,
+            Subtraction = 2,
+            Find = 3
+        }
         static void createWarehouse()
         {
             string path = @"warehouse.txt";
@@ -299,40 +315,38 @@ namespace marketMate
 
         static void listFeatures()
         {
-            string[] features = { "1. Magazyn", "2. Cennik", "3. Sprzedaż"};
-            foreach (var feature in features)
+            foreach (var feature in new string[]{"1. Magazyn", "2. Cennik"})
             {
                 Console.WriteLine(feature);
             }
 
             Console.Write("Wybierz funkcjonalność podając odpowiednią liczbę: ");
-            string selectedFeature = Console.ReadLine();
+            int selectedFeature = int.Parse(Console.ReadLine());
             Console.WriteLine();
 
             switch (selectedFeature)
             {
-                case "1":
+                case (int)features.Warehouse:
                     Console.WriteLine("Wybrano magazyn");
-                    string[] warehouseFeatures = { "1. Dodawanie", "2. Usuwanie", "3. Szukanie"};
-                    foreach (var feature in warehouseFeatures)
+                    foreach (var feature in new string[]{"1. Dodawanie", "2. Usuwanie", "3. Szukanie"})
                     {
                         Console.WriteLine(feature);
                     }
 
                     Console.Write("Wybierz funkcjonalność podając odpowiednią liczbę: ");
-                    selectedFeature = Console.ReadLine();
+                    selectedFeature = int.Parse(Console.ReadLine());
                     Console.WriteLine();
                     switch (selectedFeature)
                     {
-                        case "1":
+                        case (int)warehouseFeatures.Adding:
                             Console.WriteLine("Wybrano dodawanie");
                             addNewProductToWarehouse();
                             break;
-                        case "2":
+                        case (int)warehouseFeatures.Subtraction:
                             Console.WriteLine("Wybrano usuwanie");
                             removeProductFromWarehouse();
                             break;
-                        case "3":
+                        case (int)warehouseFeatures.Find:
                             Console.WriteLine("Wybrano szukanie");
                             findProductInWarehouse();
                             break;
@@ -341,28 +355,27 @@ namespace marketMate
                             break;
                     }
                     break;
-                case "2":
+                case (int)features.priceList:
                     Console.WriteLine("Wybrano cennik");
-                    string[] priceListFeatures = { "1. Dodawanie", "2. Usuwanie", "3. Szukanie" };
-                    foreach (var feature in priceListFeatures)
+                    foreach (var feature in new string[]{"1. Dodawanie", "2. Usuwanie", "3. Szukanie"})
                     {
                         Console.WriteLine(feature);
                     }
 
                     Console.Write("Wybierz funkcjonalność podając odpowiednią liczbę: ");
-                    selectedFeature = Console.ReadLine();
+                    selectedFeature = int.Parse(Console.ReadLine());
                     Console.WriteLine();
                     switch (selectedFeature)
                     {
-                        case "1":
+                        case (int)priceListFeatures.Adding:
                             Console.WriteLine("Wybrano dodawanie");
                             addNewProductToPriceList();
                             break;
-                        case "2":
+                        case (int)priceListFeatures.Subtraction:
                             Console.WriteLine("Wybrano usuwanie");
                             removeProductFromPriceList();
                             break;
-                        case "3":
+                        case (int)priceListFeatures.Find:
                             Console.WriteLine("Wybrano szukanie");
                             findProductInPriceList();
                             break;
@@ -370,9 +383,6 @@ namespace marketMate
                             Console.WriteLine("Err!");
                             break;
                     }
-                    break;
-                case "3":
-                    Console.WriteLine("Wybrano sprzedaż");
                     break;
                 default:
                     Console.WriteLine("Err!");
@@ -389,7 +399,7 @@ namespace marketMate
         static void Main(string[] args)
         {
             Console.WriteLine("Dzień dobry, z tej strony marketMate!");
-
+            listFeatures();
             endOfApp();
 
         }
