@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,7 +19,8 @@ namespace marketMate
         {
             Adding = 1,
             Subtraction = 2,
-            Find = 3
+            Find = 3,
+            Value = 4
         }
         enum priceListFeatures
         {
@@ -164,6 +166,32 @@ namespace marketMate
                 lines[productIndex] = line[0] + ' ' + line[1];
             }
             File.WriteAllLines("warehouse.txt", lines);
+        }
+
+        static string warehouseValue()
+        {
+            BigInteger total = 0;
+            int price;
+            int quantity;
+            string[] priceListLines = File.ReadAllLines("priceList.txt");
+            string[] warehouseLines = File.ReadAllLines("warehouse.txt");
+            string[,] productsFromWarehouse = new string[warehouseLines.Length, 2];
+
+            for (int i = 0; i < warehouseLines.Length; i++)
+            {
+                productsFromWarehouse[i, 0] = warehouseLines[i].Split(' ')[0];
+                productsFromWarehouse[i, 1] = warehouseLines[i].Split(' ')[1];
+            }
+
+            for (int i = 0; i < warehouseLines.Length; i++)
+            {
+                string priceString = Array.Find(priceListLines, line => line.Split(' ')[0] == productsFromWarehouse[i, 0]).Split(' ')[1];
+                price = priceString != null ? int.Parse(priceString) : 0;
+                quantity = int.Parse(productsFromWarehouse[i, 1]);
+                total += BigInteger.Multiply(price, quantity);
+            }
+
+            return total.ToString();
         }
 
         static string findProductInPriceList()
@@ -328,7 +356,7 @@ namespace marketMate
             {
                 case (int)features.Warehouse:
                     Console.WriteLine("Wybrano magazyn");
-                    foreach (var feature in new string[]{"1. Dodawanie", "2. Usuwanie", "3. Szukanie"})
+                    foreach (var feature in new string[]{"1. Dodawanie", "2. Usuwanie", "3. Szukanie", "4. Wartość magazynu"})
                     {
                         Console.WriteLine(feature);
                     }
@@ -349,6 +377,10 @@ namespace marketMate
                         case (int)warehouseFeatures.Find:
                             Console.WriteLine("Wybrano szukanie");
                             findProductInWarehouse();
+                            break;
+                        case (int)warehouseFeatures.Value:
+                            Console.WriteLine("Wybrano wartość magazynu");
+                            Console.WriteLine("Wartość magazynu: " + warehouseValue() + " zł");
                             break;
                         default:
                             Console.WriteLine("Err!");
