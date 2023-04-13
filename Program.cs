@@ -36,7 +36,7 @@ namespace marketMate
             Console.Write("Podaj id produktu: ");
             string id = Console.ReadLine();
             StreamReader sr = StreamReaderWarehouse();
-            string line = "";
+            string line;
             while ((line = sr.ReadLine()) != null)
             {
                 string[] elements = line.Split(' ');
@@ -48,28 +48,6 @@ namespace marketMate
                 }
             }
             Console.WriteLine("Nie znaleziono takiego produktu");
-        }
-        static int FindProductIndexInWarehouse()
-        {
-
-            Console.Write("Podaj id produktu: ");
-            string id = Console.ReadLine();
-            StreamReader sr = StreamReaderWarehouse();
-            string line = "";
-            int index = 0;
-            while ((line = sr.ReadLine()) != null)
-            {
-                string[] elements = line.Split(' ');
-                if (elements[0] == id)
-                {
-                    sr.Close();
-                    return index;
-                }
-                index++;
-            }
-            sr.Close();
-            Console.WriteLine("Nie znaleziono takiego produktu");
-            return -1;
         }
 
         static int FindProductIndexInWarehouse(string id)
@@ -285,27 +263,39 @@ namespace marketMate
             }
             Console.WriteLine("Nie znaleziono takiego produktu");
         }
-        static int FindProductIndexInPriceList()
+        static void FindProductInPriceList(bool findByPrice)
         {
-
-            Console.Write("Podaj id produktu: ");
-            string id = Console.ReadLine();
+            if (!findByPrice)
+            {
+                throw new InvalidOperationException("Nie można wywołać tej metody kiedy findByPrice nie jest true");
+            }
+            Console.Write("Podaj cenę produktu: ");
+            string price = Console.ReadLine();
             StreamReader sr = StreamReaderPriceList();
-            string line = "";
-            int index = 0;
+            string line;
+            List<string> productsFound = new List<string>();
+            int index = 1;
             while ((line = sr.ReadLine()) != null)
             {
                 string[] elements = line.Split(' ');
-                if (elements[0] == id)
+                if (elements[1] == price)
                 {
-                    sr.Close();
-                    return index;
+                    productsFound.Add(line);
                 }
-                index++;
             }
             sr.Close();
-            Console.WriteLine("Nie znaleziono takiego produktu");
-            return -1;
+
+            if (productsFound.Count == 0)
+            {
+                Console.WriteLine("Nie znaleziono takiego produktu");
+                return;
+            }
+
+            foreach (var product in productsFound)
+            {
+                Console.WriteLine(index + ". " + product + " zł");
+                index++;
+            }
         }
 
         static int FindProductIndexInPriceList(string id)
@@ -600,8 +590,50 @@ namespace marketMate
                             RemoveProductFromPriceList();
                             break;
                         case (int)PriceListFeatures.Find:
+                            pattern = "^[1-2]$";
                             Console.WriteLine("Wybrano szukanie");
-                            FindProductInPriceList();
+                            foreach (var feature in new string[] { "1. Szukaj według id", "2. Szukaj według ceny" })
+                            {
+                                Console.WriteLine(feature);
+                            }
+
+                            try
+                            {
+                                Console.Write("Wybierz funkcjonalność podając odpowiednią liczbę: ");
+                                selectedFeature = int.Parse(Console.ReadLine());
+                                if (!Regex.IsMatch(selectedFeature.ToString(), pattern))
+                                {
+                                    throw new ArgumentException();
+                                }
+                            }
+                            catch
+                            {
+                                while (!Regex.IsMatch(selectedFeature.ToString(), pattern))
+                                {
+                                    Console.WriteLine("Podana wartość jest nieprawidłowa!");
+                                    Console.Write("Wybierz funkcjonalność podając odpowiednią liczbę: ");
+                                    try
+                                    {
+                                        selectedFeature = int.Parse(Console.ReadLine());
+                                    }
+                                    catch
+                                    {
+                                        continue;
+                                    }
+                                }
+                            }
+                            switch (selectedFeature)
+                            {
+                                case 1:
+                                    FindProductInPriceList();
+                                    break;
+                                case 2:
+                                    FindProductInPriceList(true);
+                                    break;
+                                default:
+                                    Console.WriteLine("Błąd!");
+                                    break;
+                            }
                             break;
                         case (int)PriceListFeatures.ChangePrice:
                             Console.WriteLine("Wybrano zmianę ceny");
