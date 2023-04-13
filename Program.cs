@@ -11,28 +11,6 @@ namespace marketMate
 {
     class Program
     {
-        enum Features
-        {
-            Warehouse = 1,
-            PriceList = 2
-        }
-        enum WarehouseFeatures
-        {
-            Adding = 1,
-            Subtraction = 2,
-            Find = 3,
-            Value = 4,
-            ChangeQuantity = 5,
-            DisplayWarehouseContents = 6
-        }
-        enum PriceListFeatures
-        {
-            Adding = 1,
-            Subtraction = 2,
-            Find = 3,
-            ChangePrice = 4,
-            DisplayPriceListContents = 5
-        }
         static void CreateWarehouse()
         {
             string path = @"warehouse.txt";
