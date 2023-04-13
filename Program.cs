@@ -22,14 +22,16 @@ namespace marketMate
             Subtraction = 2,
             Find = 3,
             Value = 4,
-            ChangeQuantity = 5
+            ChangeQuantity = 5,
+            DisplayWarehouseContents = 6
         }
         enum priceListFeatures
         {
             Adding = 1,
             Subtraction = 2,
             Find = 3,
-            ChangePrice = 4
+            ChangePrice = 4,
+            DisplayPriceListContents = 5
         }
         static void createWarehouse()
         {
@@ -261,6 +263,32 @@ namespace marketMate
             return total.ToString();
         }
 
+        static void displayWarehouseContents()
+        {
+            int index = 1;
+            string id;
+            string quantity;
+            string[] warehouseLines = File.ReadAllLines("warehouse.txt");
+            if (warehouseLines.Length == 0)
+            {
+                Console.WriteLine("Magazyn jest pusty");
+                return;
+            }
+            Dictionary<string, string> productQuantities = new Dictionary<string, string>();
+            foreach (var line in warehouseLines)
+            {
+                id = line.Split(' ')[0];
+                quantity = line.Split(' ')[1];
+                productQuantities.Add(id, quantity);
+            }
+            foreach (KeyValuePair<string, string> product in productQuantities)
+            {
+                Console.WriteLine($"{index}. {product.Key} {product.Value} szt.");
+                index++;
+            }
+
+        }
+
         static void findProductInPriceList()
         {
             Console.Write("Podaj id produktu: ");
@@ -375,6 +403,32 @@ namespace marketMate
             File.WriteAllLines("priceList.txt", lines);
         }
 
+        static void displayPriceListContents()
+        {
+            int index = 1;
+            string id;
+            string price;
+            string[] priceListLines = File.ReadAllLines("priceList.txt");
+            if (priceListLines.Length == 0)
+            {
+                Console.WriteLine("Cennik jest pusty");
+                return;
+            }
+            Dictionary<string, string> productPrices = new Dictionary<string, string>();
+            foreach (var line in priceListLines)
+            {
+                id = line.Split(' ')[0];
+                price = line.Split(' ')[1];
+                productPrices.Add(id, price);
+            }
+            foreach (KeyValuePair<string, string> product in productPrices)
+            {
+                Console.WriteLine($"{index}. {product.Key} {product.Value} zł");
+                index++;
+            }
+
+        }
+
         static void createPriceList()
         {
             string path = @"priceList.txt";
@@ -455,10 +509,10 @@ namespace marketMate
             switch (selectedFeature)
             {
                 case (int)features.Warehouse:
-                    pattern = "^[1-5]$";
+                    pattern = "^[1-6]$";
                     selectedFeature = 0;
                     Console.WriteLine("Wybrano magazyn");
-                    foreach (var feature in new string[]{"1. Dodawanie", "2. Usuwanie", "3. Szukanie", "4. Wartość magazynu", "5. Zmiana ilości produktu"})
+                    foreach (var feature in new string[]{"1. Dodawanie", "2. Usuwanie", "3. Szukanie", "4. Wartość magazynu", "5. Zmiana ilości produktu", "6. Wyświetlenie zawartości magazynu"})
                     {
                         Console.WriteLine(feature);
                     }
@@ -512,16 +566,20 @@ namespace marketMate
                             Console.WriteLine("Wybrano zmianę ilości produktu");
                             changeTheQuantityOfProductInWarehouse();
                             break;
+                        case (int)warehouseFeatures.DisplayWarehouseContents:
+                            Console.WriteLine("Wybrano wyświetlenie zawartości magazynu");
+                            displayWarehouseContents();
+                            break;
                         default:
                             Console.WriteLine("Błąd!");
                             break;
                     }
                     break;
                 case (int)features.priceList:
-                    pattern = "^[1-4]$";
+                    pattern = "^[1-5]$";
                     selectedFeature = 0;
                     Console.WriteLine("Wybrano cennik");
-                    foreach (var feature in new string[]{"1. Dodawanie", "2. Usuwanie", "3. Szukanie", "4. Zmiana ceny"})
+                    foreach (var feature in new string[]{"1. Dodawanie", "2. Usuwanie", "3. Szukanie", "4. Zmiana ceny", "5. Wyświetlenie zawartości cennika" })
                     {
                         Console.WriteLine(feature);
                     }
@@ -570,6 +628,10 @@ namespace marketMate
                         case (int)priceListFeatures.ChangePrice:
                             Console.WriteLine("Wybrano zmianę ceny");
                             changeThePriceOfProductInPriceList();
+                            break;
+                        case (int)priceListFeatures.DisplayPriceListContents:
+                            Console.WriteLine("Wybrano wyświetlenie zawartości cennika");
+                            displayPriceListContents();
                             break;
                         default:
                             Console.WriteLine("Błąd!");
