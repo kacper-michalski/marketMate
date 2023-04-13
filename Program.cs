@@ -194,6 +194,7 @@ namespace marketMate
             BigInteger total = 0;
             int price;
             int quantity;
+            string id;
             string[] priceListLines = File.ReadAllLines("priceList.txt");
             string[] warehouseLines = File.ReadAllLines("warehouse.txt");
             if (priceListLines.Length == 0 || warehouseLines.Length == 0)
@@ -210,10 +211,15 @@ namespace marketMate
 
             for (int i = 0; i < warehouseLines.Length; i++)
             {
-                string priceString = Array.Find(priceListLines, line => line.Split(' ')[0] == productsFromWarehouse[i, 0]).Split(' ')[1];
-                price = priceString != null ? int.Parse(priceString) : 0;
-                quantity = int.Parse(productsFromWarehouse[i, 1]);
-                total += BigInteger.Multiply(price, quantity);
+                id = productsFromWarehouse[i, 0];
+                if (FindProductIndexInPriceList(id) >= 0)
+                {
+                    string priceString = Array.Find(priceListLines, line => line.Split(' ')[0] == id).Split(' ')[1];
+                    price = priceString != null ? int.Parse(priceString) : 0;
+                    quantity = int.Parse(productsFromWarehouse[i, 1]);
+                    total += BigInteger.Multiply(price, quantity);
+                }
+                
             }
 
             return total.ToString();
@@ -319,14 +325,14 @@ namespace marketMate
 
         static void AddNewProductToPriceList()
         {
-            Console.WriteLine("Podaj id produktu: ");
+            Console.Write("Podaj id produktu: ");
             string id = Console.ReadLine();
             if (FindProductIndexInPriceList(id) >= 0)
             {
                 Console.WriteLine("Taki produkt już istnieje w cenniku!");
                 return;
             }
-            Console.WriteLine("Podaj cenę produktu: ");
+            Console.Write("Podaj cenę produktu: ");
             string price = Console.ReadLine();
             StreamWriter sw = StreamWriterPriceList();
             sw.WriteLine(id + " " + price);
@@ -338,12 +344,12 @@ namespace marketMate
             string[] lines = File.ReadAllLines("priceList.txt");
             Console.Write("Podaj id produktu: ");
             string id = Console.ReadLine();
-            if (FindProductIndexInPriceList(id)<0)
+            if (FindProductIndexInPriceList(id) < 0)
             {
                 Console.WriteLine("Nie znaleziono takiego produktu");
                 return;
             }
-            lines = lines.Where((line, index) => index != FindProductIndexInWarehouse(id)).ToArray();
+            lines = lines.Where((line, index) => index != FindProductIndexInPriceList(id)).ToArray();
 
             File.WriteAllLines("priceList.txt", lines);
         }
