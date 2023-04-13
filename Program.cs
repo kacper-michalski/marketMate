@@ -11,12 +11,12 @@ namespace marketMate
 {
     class Program
     {
-        enum features
+        enum Features
         {
             Warehouse = 1,
-            priceList = 2
+            PriceList = 2
         }
-        enum warehouseFeatures
+        enum WarehouseFeatures
         {
             Adding = 1,
             Subtraction = 2,
@@ -25,7 +25,7 @@ namespace marketMate
             ChangeQuantity = 5,
             DisplayWarehouseContents = 6
         }
-        enum priceListFeatures
+        enum PriceListFeatures
         {
             Adding = 1,
             Subtraction = 2,
@@ -33,31 +33,31 @@ namespace marketMate
             ChangePrice = 4,
             DisplayPriceListContents = 5
         }
-        static void createWarehouse()
+        static void CreateWarehouse()
         {
             string path = @"warehouse.txt";
             StreamWriter sw = File.CreateText(path);
             sw.Close();
         }
-        static StreamReader streamReaderWarehouse()
+        static StreamReader StreamReaderWarehouse()
         {
             string path = @"warehouse.txt";
             StreamReader sr = File.OpenText(path);
             return sr;
         }
 
-        static StreamWriter streamWriterWarehouse()
+        static StreamWriter StreamWriterWarehouse()
         {
             string path = @"warehouse.txt";
             StreamWriter sw = new StreamWriter(path, true);
             return sw;
         }
 
-        static void findProductInWarehouse()
+        static void FindProductInWarehouse()
         {
             Console.Write("Podaj id produktu: ");
             string id = Console.ReadLine();
-            StreamReader sr = streamReaderWarehouse();
+            StreamReader sr = StreamReaderWarehouse();
             string line = "";
             while ((line = sr.ReadLine()) != null)
             {
@@ -71,12 +71,12 @@ namespace marketMate
             }
             Console.WriteLine("Nie znaleziono takiego produktu");
         }
-        static int findProductIndexInWarehouse()
+        static int FindProductIndexInWarehouse()
         {
 
             Console.Write("Podaj id produktu: ");
             string id = Console.ReadLine();
-            StreamReader sr = streamReaderWarehouse();
+            StreamReader sr = StreamReaderWarehouse();
             string line = "";
             int index = 0;
             while ((line = sr.ReadLine()) != null)
@@ -94,9 +94,9 @@ namespace marketMate
             return -1;
         }
 
-        static int findProductIndexInWarehouse(string id)
+        static int FindProductIndexInWarehouse(string id)
         {
-            StreamReader sr = streamReaderWarehouse();
+            StreamReader sr = StreamReaderWarehouse();
             string line = "";
             int index = 0;
             while ((line = sr.ReadLine()) != null)
@@ -113,38 +113,38 @@ namespace marketMate
             return -1;
         }
 
-        static void addNewProductToWarehouse()
+        static void AddNewProductToWarehouse()
         {
             Console.Write("Podaj id produktu: ");
             string id = Console.ReadLine();
-            if (findProductIndexInWarehouse(id) >= 0)
+            if (FindProductIndexInWarehouse(id) >= 0)
             {
                 Console.WriteLine("Taki produkt już istnieje w magazynie!");
                 return;
             }
             Console.Write("Podaj ilość produktu: ");
             string quantity = Console.ReadLine();
-            StreamWriter sw = streamWriterWarehouse();
+            StreamWriter sw = StreamWriterWarehouse();
             sw.WriteLine(id + " " + quantity);
             sw.Close();
         }
 
 
-        static void removeProductFromWarehouse()
+        static void RemoveProductFromWarehouse()
         {
             string[] lines = File.ReadAllLines("warehouse.txt");
             Console.Write("Podaj id produktu: ");
             string id = Console.ReadLine();
-            if (findProductIndexInWarehouse(id) < 0)
+            if (FindProductIndexInWarehouse(id) < 0)
             {
                 Console.WriteLine("Nie ma produktu z podanym id");
                 return;
             }
-            lines = lines.Where((line, index) => index != findProductIndexInWarehouse(id)).ToArray();
+            lines = lines.Where((line, index) => index != FindProductIndexInWarehouse(id)).ToArray();
 
             File.WriteAllLines("warehouse.txt", lines);
         }
-        static void changeTheQuantityOfProductInWarehouse()
+        static void ChangeTheQuantityOfProductInWarehouse()
         {
             string[] lines = File.ReadAllLines("warehouse.txt");
             int quantityToChange;
@@ -154,7 +154,7 @@ namespace marketMate
 
             Console.Write("Podaj id produktu: ");
             string id = Console.ReadLine();
-            int productIndex = findProductIndexInWarehouse(id);
+            int productIndex = FindProductIndexInWarehouse(id);
 
             if (productIndex < 0)
             {
@@ -233,7 +233,7 @@ namespace marketMate
             File.WriteAllLines("warehouse.txt", lines);
         }
 
-        static string warehouseValue()
+        static string WarehouseValue()
         {
             BigInteger total = 0;
             int price;
@@ -263,7 +263,7 @@ namespace marketMate
             return total.ToString();
         }
 
-        static void displayWarehouseContents()
+        static void DisplayWarehouseContents()
         {
             int index = 1;
             string id;
@@ -289,11 +289,11 @@ namespace marketMate
 
         }
 
-        static void findProductInPriceList()
+        static void FindProductInPriceList()
         {
             Console.Write("Podaj id produktu: ");
             string id = Console.ReadLine();
-            StreamReader sr = streamReaderPriceList();
+            StreamReader sr = StreamReaderPriceList();
             string line = "";
             while ((line = sr.ReadLine()) != null)
             {
@@ -307,12 +307,12 @@ namespace marketMate
             }
             Console.WriteLine("Nie znaleziono takiego produktu");
         }
-        static int findProductIndexInPriceList()
+        static int FindProductIndexInPriceList()
         {
 
             Console.Write("Podaj id produktu: ");
             string id = Console.ReadLine();
-            StreamReader sr = streamReaderPriceList();
+            StreamReader sr = StreamReaderPriceList();
             string line = "";
             int index = 0;
             while ((line = sr.ReadLine()) != null)
@@ -330,9 +330,9 @@ namespace marketMate
             return -1;
         }
 
-        static int findProductIndexInPriceList(string id)
+        static int FindProductIndexInPriceList(string id)
         {
-            StreamReader sr = streamReaderPriceList();
+            StreamReader sr = StreamReaderPriceList();
             string line = "";
             int index = 0;
             while ((line = sr.ReadLine()) != null)
@@ -349,38 +349,38 @@ namespace marketMate
             return -1;
         }
 
-        static void addNewProductToPriceList()
+        static void AddNewProductToPriceList()
         {
             Console.WriteLine("Podaj id produktu: ");
             string id = Console.ReadLine();
-            if (findProductIndexInPriceList(id) >= 0)
+            if (FindProductIndexInPriceList(id) >= 0)
             {
                 Console.WriteLine("Taki produkt już istnieje w cenniku!");
                 return;
             }
             Console.WriteLine("Podaj cenę produktu: ");
             string price = Console.ReadLine();
-            StreamWriter sw = streamWriterPriceList();
+            StreamWriter sw = StreamWriterPriceList();
             sw.WriteLine(id + " " + price);
             sw.Close();
         }
 
-        static void removeProductFromPriceList()
+        static void RemoveProductFromPriceList()
         {
             string[] lines = File.ReadAllLines("priceList.txt");
             Console.Write("Podaj id produktu: ");
             string id = Console.ReadLine();
-            if (findProductIndexInPriceList(id)<0)
+            if (FindProductIndexInPriceList(id)<0)
             {
                 Console.WriteLine("Nie znaleziono takiego produktu");
                 return;
             }
-            lines = lines.Where((line, index) => index != findProductIndexInWarehouse(id)).ToArray();
+            lines = lines.Where((line, index) => index != FindProductIndexInWarehouse(id)).ToArray();
 
             File.WriteAllLines("priceList.txt", lines);
         }
 
-        static void changeThePriceOfProductInPriceList()
+        static void ChangeThePriceOfProductInPriceList()
         {
             string[] lines = File.ReadAllLines("priceList.txt");
             List<string> linesList = new List<string>();
@@ -390,7 +390,7 @@ namespace marketMate
             }
             Console.Write("Podaj id produktu: ");
             string id = Console.ReadLine();
-            if (findProductIndexInPriceList(id)<0)
+            if (FindProductIndexInPriceList(id)<0)
             {
                 Console.WriteLine("Nie znaleziono takiego produktu");
                 return;
@@ -403,7 +403,7 @@ namespace marketMate
             File.WriteAllLines("priceList.txt", lines);
         }
 
-        static void displayPriceListContents()
+        static void DisplayPriceListContents()
         {
             int index = 1;
             string id;
@@ -429,47 +429,47 @@ namespace marketMate
 
         }
 
-        static void createPriceList()
+        static void CreatePriceList()
         {
             string path = @"priceList.txt";
             StreamWriter sw = File.CreateText(path);
             sw.Close();
         }
-        static StreamReader streamReaderPriceList()
+        static StreamReader StreamReaderPriceList()
         {
             string path = @"priceList.txt";
             StreamReader sr = File.OpenText(path);
             return sr;
         }
 
-        static StreamWriter streamWriterPriceList()
+        static StreamWriter StreamWriterPriceList()
         {
             string path = @"priceList.txt";
             StreamWriter sw = new StreamWriter(path, true);
             return sw;
         }
-        static void initializeWarehouse()
+        static void InitializeWarehouse()
         {
             string path = @"warehouse.txt";
 
             if (!File.Exists(path))
             {
-                createWarehouse();
+                CreateWarehouse();
             }
         }
 
-        static void initializePriceList()
+        static void InitializePriceList()
         {
             string path = @"priceList.txt";
 
             if (!File.Exists(path))
             {
-                createPriceList();
+                CreatePriceList();
             }
 
         }
 
-        static void listFeatures()
+        static void ListFeatures()
         {
             string pattern = "^[1-2]$";
             int selectedFeature = 0;
@@ -508,7 +508,7 @@ namespace marketMate
 
             switch (selectedFeature)
             {
-                case (int)features.Warehouse:
+                case (int)Features.Warehouse:
                     pattern = "^[1-6]$";
                     selectedFeature = 0;
                     Console.WriteLine("Wybrano magazyn");
@@ -546,36 +546,36 @@ namespace marketMate
                     Console.WriteLine();
                     switch (selectedFeature)
                     {
-                        case (int)warehouseFeatures.Adding:
+                        case (int)WarehouseFeatures.Adding:
                             Console.WriteLine("Wybrano dodawanie");
-                            addNewProductToWarehouse();
+                            AddNewProductToWarehouse();
                             break;
-                        case (int)warehouseFeatures.Subtraction:
+                        case (int)WarehouseFeatures.Subtraction:
                             Console.WriteLine("Wybrano usuwanie");
-                            removeProductFromWarehouse();
+                            RemoveProductFromWarehouse();
                             break;
-                        case (int)warehouseFeatures.Find:
+                        case (int)WarehouseFeatures.Find:
                             Console.WriteLine("Wybrano szukanie");
-                            findProductInWarehouse();
+                            FindProductInWarehouse();
                             break;
-                        case (int)warehouseFeatures.Value:
+                        case (int)WarehouseFeatures.Value:
                             Console.WriteLine("Wybrano wartość magazynu");
-                            Console.WriteLine("Wartość magazynu: " + warehouseValue() + " zł");
+                            Console.WriteLine("Wartość magazynu: " + WarehouseValue() + " zł");
                             break;
-                        case (int)warehouseFeatures.ChangeQuantity:
+                        case (int)WarehouseFeatures.ChangeQuantity:
                             Console.WriteLine("Wybrano zmianę ilości produktu");
-                            changeTheQuantityOfProductInWarehouse();
+                            ChangeTheQuantityOfProductInWarehouse();
                             break;
-                        case (int)warehouseFeatures.DisplayWarehouseContents:
+                        case (int)WarehouseFeatures.DisplayWarehouseContents:
                             Console.WriteLine("Wybrano wyświetlenie zawartości magazynu");
-                            displayWarehouseContents();
+                            DisplayWarehouseContents();
                             break;
                         default:
                             Console.WriteLine("Błąd!");
                             break;
                     }
                     break;
-                case (int)features.priceList:
+                case (int)Features.PriceList:
                     pattern = "^[1-5]$";
                     selectedFeature = 0;
                     Console.WriteLine("Wybrano cennik");
@@ -613,25 +613,25 @@ namespace marketMate
                     Console.WriteLine();
                     switch (selectedFeature)
                     {
-                        case (int)priceListFeatures.Adding:
+                        case (int)PriceListFeatures.Adding:
                             Console.WriteLine("Wybrano dodawanie");
-                            addNewProductToPriceList();
+                            AddNewProductToPriceList();
                             break;
-                        case (int)priceListFeatures.Subtraction:
+                        case (int)PriceListFeatures.Subtraction:
                             Console.WriteLine("Wybrano usuwanie");
-                            removeProductFromPriceList();
+                            RemoveProductFromPriceList();
                             break;
-                        case (int)priceListFeatures.Find:
+                        case (int)PriceListFeatures.Find:
                             Console.WriteLine("Wybrano szukanie");
-                            findProductInPriceList();
+                            FindProductInPriceList();
                             break;
-                        case (int)priceListFeatures.ChangePrice:
+                        case (int)PriceListFeatures.ChangePrice:
                             Console.WriteLine("Wybrano zmianę ceny");
-                            changeThePriceOfProductInPriceList();
+                            ChangeThePriceOfProductInPriceList();
                             break;
-                        case (int)priceListFeatures.DisplayPriceListContents:
+                        case (int)PriceListFeatures.DisplayPriceListContents:
                             Console.WriteLine("Wybrano wyświetlenie zawartości cennika");
-                            displayPriceListContents();
+                            DisplayPriceListContents();
                             break;
                         default:
                             Console.WriteLine("Błąd!");
@@ -644,7 +644,7 @@ namespace marketMate
             }
         }
 
-        static void endOfApp()
+        static void EndOfApp()
         {
             Console.Write("Naciśnij dowolny klawisz...");
             Console.ReadKey();
@@ -653,11 +653,11 @@ namespace marketMate
         static void Main(string[] args)
         {
             Console.WriteLine("Dzień dobry, z tej strony marketMate!");
-            initializePriceList();
-            initializeWarehouse();
+            InitializePriceList();
+            InitializeWarehouse();
             while (true)
             {
-                listFeatures();
+                ListFeatures();
                 string pattern = "^[1-2]$";
                 string answer = "";
                 Console.WriteLine();
@@ -689,7 +689,7 @@ namespace marketMate
                 }
                 Console.Clear();
             }
-            endOfApp();
+            EndOfApp();
 
         }
     }
