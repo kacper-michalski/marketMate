@@ -115,6 +115,11 @@ namespace marketMate
         {
             Console.Write("Podaj id produktu: ");
             string id = Console.ReadLine();
+            if (findProductIndexInWarehouse(id) >= 0)
+            {
+                Console.WriteLine("Taki produkt już istnieje w magazynie!");
+                return;
+            }
             Console.Write("Podaj ilość produktu: ");
             string quantity = Console.ReadLine();
             StreamWriter sw = streamWriterWarehouse();
@@ -233,6 +238,10 @@ namespace marketMate
             int quantity;
             string[] priceListLines = File.ReadAllLines("priceList.txt");
             string[] warehouseLines = File.ReadAllLines("warehouse.txt");
+            if (priceListLines.Length == 0 || warehouseLines.Length == 0)
+            {
+                return total.ToString();
+            }
             string[,] productsFromWarehouse = new string[warehouseLines.Length, 2];
 
             for (int i = 0; i < warehouseLines.Length; i++)
@@ -316,9 +325,9 @@ namespace marketMate
         {
             Console.WriteLine("Podaj id produktu: ");
             string id = Console.ReadLine();
-            if (findProductIndexInPriceList(id)<0)
+            if (findProductIndexInPriceList(id) >= 0)
             {
-                Console.WriteLine("Nie znaleziono takiego produktu");
+                Console.WriteLine("Taki produkt już istnieje w cenniku!");
                 return;
             }
             Console.WriteLine("Podaj cenę produktu: ");
@@ -388,58 +397,22 @@ namespace marketMate
         static void initializeWarehouse()
         {
             string path = @"warehouse.txt";
-            StreamWriter sw;
 
             if (!File.Exists(path))
             {
-                sw = File.CreateText(path);
+                createWarehouse();
             }
-            else
-            {
-                sw = new StreamWriter(path, true);
-            }
-
-            sw.Close();
-            StreamReader sr = File.OpenText(path);
-            string s = "";
-            int i = 1;
-            Console.WriteLine("Zawartość magazynu:");
-            while ((s = sr.ReadLine()) != null)
-            {
-                Console.WriteLine(i++ + ". " + s);
-            }
-
-            sr.Close();
-
- 
-            
         }
 
         static void initializePriceList()
         {
             string path = @"priceList.txt";
-            StreamWriter sw;
 
             if (!File.Exists(path))
             {
-                sw = File.CreateText(path);
-            }
-            else
-            {
-                sw = new StreamWriter(path, true);
+                createPriceList();
             }
 
-            sw.Close();
-            StreamReader sr = File.OpenText(path);
-            string s = "";
-            int i = 1;
-            Console.WriteLine("Zawartość cennika:");
-            while ((s = sr.ReadLine()) != null)
-            {
-                Console.WriteLine(i++ + ". " + s);
-            }
-
-            sr.Close();
         }
 
         static void listFeatures()
@@ -618,6 +591,8 @@ namespace marketMate
         static void Main(string[] args)
         {
             Console.WriteLine("Dzień dobry, z tej strony marketMate!");
+            initializePriceList();
+            initializeWarehouse();
             while (true)
             {
                 listFeatures();
